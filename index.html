@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Show do Milhão - Quiz</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="quiz-container">
+    <h1>Show do Milhão - Quiz</h1>
+    <div id="quiz"></div>
+    <p id="score"></p>
+  </div>
+
+  <script>
+    const perguntas = [
+      {
+        pergunta: "Qual é o objetivo principal da LGPD?",
+        opcoes: ["Proteger os dados pessoais", "Regulamentar IA", "Criar senhas seguras", "Controlar redes sociais"],
+        resposta: 0
+      },
+      {
+        pergunta: "O que significa 'phishing' em segurança da informação?",
+        opcoes: ["Um tipo de firewall", "Roubo de informações por engano", "Ataque de engenharia social", "Software de proteção"],
+        resposta: 2
+      },
+      {
+        pergunta: "Qual destas é uma característica importante da Inteligência Artificial?",
+        opcoes: ["Memorização simples", "Capacidade de aprender com dados", "Apenas cálculos matemáticos", "Somente automação repetitiva"],
+        resposta: 1
+      }
+    ];
+
+    let indice = 0;
+    let pontos = 0;
+
+    function carregarPergunta() {
+      if (indice >= perguntas.length) {
+        document.getElementById("quiz").innerHTML = `<h2>Fim do jogo!</h2><p>Você fez ${pontos} pontos.</p>`;
+        document.getElementById("score").innerText = "";
+        return;
+      }
+
+      const q = perguntas[indice];
+      let html = `<div class='question'>${q.pergunta}</div>`;
+      q.opcoes.forEach((op, i) => {
+        html += `<div class='option' onclick='verificarResposta(${i})'>${op}</div>`;
+      });
+      document.getElementById("quiz").innerHTML = html;
+      document.getElementById("score").innerText = `Pontuação: ${pontos}`;
+    }
+
+    function verificarResposta(escolha) {
+      const q = perguntas[indice];
+      const opcoes = document.querySelectorAll(".option");
+      if (escolha === q.resposta) {
+        opcoes[escolha].classList.add("correct");
+        pontos += 10;
+      } else {
+        opcoes[escolha].classList.add("wrong");
+        opcoes[q.resposta].classList.add("correct");
+      }
+      setTimeout(() => {
+        indice++;
+        carregarPergunta();
+      }, 1000);
+    }
+
+    carregarPergunta();
+  </script>
+</body>
+</html>
