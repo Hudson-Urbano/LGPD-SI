@@ -1,72 +1,126 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Show do Milhão - Quiz</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show de Dados da Docket</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="quiz-container">
-    <h1>Show do Milhão - Quiz</h1>
-    <div id="quiz"></div>
-    <p id="score"></p>
-  </div>
 
-  <script>
-    const perguntas = [
-      {
-        pergunta: "Qual é o objetivo principal da LGPD?",
-        opcoes: ["Proteger os dados pessoais", "Regulamentar IA", "Criar senhas seguras", "Controlar redes sociais"],
-        resposta: 0
-      },
-      {
-        pergunta: "O que significa 'phishing' em segurança da informação?",
-        opcoes: ["Um tipo de firewall", "Roubo de informações por engano", "Ataque de engenharia social", "Software de proteção"],
-        resposta: 2
-      },
-      {
-        pergunta: "Qual destas é uma característica importante da Inteligência Artificial?",
-        opcoes: ["Memorização simples", "Capacidade de aprender com dados", "Apenas cálculos matemáticos", "Somente automação repetitiva"],
-        resposta: 1
-      }
-    ];
+    <main class="container">
 
-    let indice = 0;
-    let pontos = 0;
+        <div id="modal-instrucoes" class="modal ativo">
+            <div class="modal-conteudo">
+                <div class="modal-cabecalho">
+                    <h3 id="instrucoes-titulo">Instruções do Jogo</h3>
+                </div>
+                <p class="texto-instrucoes">🎉 <strong>Bem-vindo ao Show de Dados!</strong> 🎉<br> Responda corretamente às perguntas e acumule pontos.</p>
+                <p class="texto-instrucoes">✅ Cada resposta certa vale <strong>100 pontos</strong> e você avança para a próxima questão.<br> ❌ Se errar, continua jogando, mas sem pontuar.</p>
+                <p class="texto-instrucoes">💡 <strong>Dica:</strong> Receba uma pista! <em>(uma vez por pergunta)</em></p>
+                <p class="texto-instrucoes">⚖️ <strong>50:50:</strong> Elimine 2 alternativas erradas. <em>(máx. 3 vezes em todo o jogo)</em></p>
+                <p class="texto-instrucoes">🚀 Use suas ajudas com estratégia e boa sorte!</p>
+                    <button id="botao-entendido" class="botao-grande">👍 Entendido!</button>
+            </div>
+        </div>
 
-    function carregarPergunta() {
-      if (indice >= perguntas.length) {
-        document.getElementById("quiz").innerHTML = `<h2>Fim do jogo!</h2><p>Você fez ${pontos} pontos.</p>`;
-        document.getElementById("score").innerText = "";
-        return;
-      }
+        <section id="tela-inicio" class="tela">
+            <h1 class="titulo-principal">Bem vindo(a) ao show de dados da Docket!</h1>
+            <div class="personagens">
+                <div class="personagem-principal" data-personagem="Amanda">
+                    <p class="nome-personagem">Amanda</p>
+                    <img src="images/Amanda.png" alt="Amanda, a apresentadora" class="img-personagem-principal">
+                </div>
+                <div class="personagens-secundarios">
+                    <div class="personagem" data-personagem="Hudson">
+                        <img src="images/Hudson.png" alt="Hudson" class="img-personagem">
+                        <p class="nome-personagem">Hudson</p>
+                    </div>
+                    <div class="personagem" data-personagem="Ailton">
+                        <img src="images/Ailton.png" alt="Ailton" class="img-personagem">
+                        <p class="nome-personagem">Ailton</p>
+                    </div>
+                    <div class="personagem" data-personagem="Elaine">
+                        <img src="images/Elaine.png" alt="Elaine" class="img-personagem">
+                        <p class="nome-personagem">Elaine</p>
+                    </div>
+                    <div class="personagem" data-personagem="Neuri">
+                        <img src="images/Neuri.png" alt="Neuri" class="img-personagem">
+                        <p class="nome-personagem">Neuri</p>
+                    </div>
+                </div>
+            </div>
+            <button id="botao-jogar" class="botao-grande">JOGAR</button>
+        </section>
 
-      const q = perguntas[indice];
-      let html = `<div class='question'>${q.pergunta}</div>`;
-      q.opcoes.forEach((op, i) => {
-        html += `<div class='option' onclick='verificarResposta(${i})'>${op}</div>`;
-      });
-      document.getElementById("quiz").innerHTML = html;
-      document.getElementById("score").innerText = `Pontuação: ${pontos}`;
-    }
+        <section id="tela-pergunta" class="tela">
+            <div class="cabecalho-pergunta">
+                <h2 id="pergunta-titulo"></h2>
+                <div class="personagem-pergunta-container">
+                    <p id="personagem-pergunta-nome" class="nome-personagem"></p>
+                    <img id="personagem-pergunta-img" src="" alt="" class="img-personagem-pergunta">
+                </div>
+            </div>
+            <div class="opcoes-container">
+                <button class="opcao"></button>
+                <button class="opcao"></button>
+                <button class="opcao"></button>
+                <button class="opcao"></button>
+            </div>
+            <div class="acoes-pergunta">
+                <p id="pontuacao-atual" class="valor-pergunta">Pontos: 0</p>
+                <button id="botao-dica" class="botao-pequeno">Dica💡</button>
+                <button id="botao-eliminar" class="botao-pequeno">50:50</button>
+            </div>
+        </section>
 
-    function verificarResposta(escolha) {
-      const q = perguntas[indice];
-      const opcoes = document.querySelectorAll(".option");
-      if (escolha === q.resposta) {
-        opcoes[escolha].classList.add("correct");
-        pontos += 10;
-      } else {
-        opcoes[escolha].classList.add("wrong");
-        opcoes[q.resposta].classList.add("correct");
-      }
-      setTimeout(() => {
-        indice++;
-        carregarPergunta();
-      }, 1000);
-    }
+        <div id="modal-dica" class="modal">
+            <div class="modal-conteudo">
+                <div class="modal-cabecalho">
+                    <h3 id="dica-titulo">Dica do T.I 🦾</h3>
+                </div>
+                <img id="dica-img" src="images/Ailton.png" alt="Personagem T.I" class="img-dica">
+                <p id="dica-texto" class="texto-dica"></p>
+                <button id="botao-modal-ok" class="botao-grande">Ok!</button>
+            </div>
+        </div>
 
-    carregarPergunta();
-  </script>
+        <div id="modal-feedback" class="modal">
+            <div class="modal-conteudo">
+                <div class="personagem-feedback-container">
+                    <img id="feedback-img" src="" alt="Personagem de feedback" class="img-feedback">
+                    <p id="feedback-nome" class="nome-personagem"></p>
+                </div>
+                <div class="feedback-mensagem-container">
+                    <p id="feedback-texto" class="feedback-mensagem"></p>
+                </div>
+            </div>
+        </div>
+
+        <div id="modal-sobre" class="modal">
+            <div class="modal-conteudo">
+                <div class="modal-cabecalho">
+                    <h3 id="sobre-titulo">Sobre <span id="sobre-nome"></span></h3>
+                </div>
+                <img id="sobre-img" src="" alt="Foto do personagem" class="img-sobre">
+                <p id="sobre-texto" class="texto-sobre"></p>
+                <button id="botao-fechar-sobre" class="botao-grande">Fechar</button>
+            </div>
+        </div>
+
+        <section id="tela-final" class="tela">
+            <h1 class="titulo-principal">Parabéns!</h1>
+            <p class="pontuacao-final-texto">Sua pontuação final:</p>
+            <p id="pontuacao-final" class="pontuacao-final"></p>
+            <button id="botao-reiniciar" class="botao-grande">Jogar Novamente</button>
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
 </body>
 </html>
