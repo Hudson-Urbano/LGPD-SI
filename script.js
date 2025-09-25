@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const botaoDica = document.getElementById('botao-dica');
     const botaoEliminar = document.getElementById('botao-eliminar');
     const botaoReiniciar = document.getElementById('botao-reiniciar');
+    
+    const videoFinal = document.getElementById('video-final'); 
 
     const modalInstrucoes = document.getElementById('modal-instrucoes');
     const botaoEntendido = document.getElementById('botao-entendido');
@@ -45,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const somClique = new Audio('audio/clique.mp3');
     const somEliminar = new Audio('audio/eliminar.mp3');
 
-    // Mantenho a lista original para que a função de embaralhar a use a cada novo jogo
     const perguntasOriginal = [
         {
             pergunta: "O que é LGPD?",
@@ -128,13 +129,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let perguntas = [];
     
-    // NOVO: Adicionei objetos para os personagens fixos
     const apresentadores = [
         { nome: "Amanda", img: "images/Amanda.png" },
         { nome: "Neuri", img: "images/Neuri.png" }
     ];
-    const feedbackAcerto = { nome: "Hudson", img: "images/Hudson.png", texto: "Parabéns, você acertou! Prepare-se para a próxima pergunta." };
-    const feedbackErro = { nome: "Elaine", img: "images/Elaine.png", texto: "Continue tentando, a próxima é sua!" };
+    const infoFeedbackAcerto = { nome: "Hudson", img: "images/Hudson.png", texto: "Parabéns, você acertou! Prepare-se para a próxima pergunta." };
+    const infoFeedbackErro = { nome: "Elaine", img: "images/Elaine.png", texto: "Continue tentando, a próxima é sua!" };
     const personagemDica = { nome: "Ailton", img: "images/Ailton.png" };
     
     const infoPersonagens = {
@@ -188,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function carregarPergunta(index) {
         const pergunta = perguntas[index];
         
-        // NOVO: Lógica para escolher o apresentador fixo
+        // Lógica para escolher o apresentador fixo (Amanda ou Neuri)
         const apresentadorAtual = apresentadores[Math.floor(Math.random() * apresentadores.length)];
         perguntaTitulo.textContent = pergunta.pergunta;
         personagemPerguntaNome.textContent = apresentadorAtual.nome;
@@ -227,11 +227,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (resposta === pergunta.respostaCorreta) {
             pontuacao += 100;
             somAcerto.play();
-            exibirFeedback(feedbackAcerto);
+            exibirFeedback(infoFeedbackAcerto);
             acertou = true;
         } else {
             somErro.play();
-            exibirFeedback(feedbackErro);
+            exibirFeedback(infoFeedbackErro);
         }
 
         setTimeout(() => {
@@ -283,6 +283,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function finalizarJogo() {
         pontuacaoFinalElem.textContent = pontuacao;
         exibirTela(telaFinal);
+        videoFinal.currentTime = 0; // Volta o vídeo para o início
+        videoFinal.play(); // Inicia a reprodução do vídeo
     }
 
     function reiniciarJogo() {
@@ -290,10 +292,12 @@ document.addEventListener('DOMContentLoaded', () => {
         pontuacao = 0;
         dicaUsada = false;
         usos5050Restantes = 3;
+        videoFinal.pause(); // Pausa o vídeo quando a tela final é fechada
         perguntas = embaralharArray([...perguntasOriginal]);
         exibirTela(telaInicio);
     }
     
+    // Event Listeners
     botaoEntendido.addEventListener('click', () => {
         somClique.play();
         esconderModal(modalInstrucoes);
@@ -323,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!dicaUsada) {
             somClique.play();
             dicaTexto.textContent = perguntas[perguntaAtualIndex].dica;
-            // NOVO: Define a imagem do personagem de dica
+            // Define a imagem do personagem de dica (Ailton)
             dicaImg.src = personagemDica.img;
             exibirModal(modalDica);
             botaoDica.classList.add('desabilitado');

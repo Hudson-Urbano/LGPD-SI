@@ -97,7 +97,6 @@ body {
     font-weight: bold;
     cursor: pointer;
     background: linear-gradient(90deg, #5EE09F, #22A0F0);
-    color: #fff;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     transition: transform 0.2s;
     margin-top: 40px;
@@ -229,7 +228,7 @@ body {
 }
 
 
-/* --- MODAIS (DICA, FEEDBACK e SOBRE) --- */
+/* --- MODAIS (Geral) --- */
 .modal {
     display: flex;
     position: fixed;
@@ -330,6 +329,14 @@ body {
 /* --- Estilos da tela final --- */
 #tela-final {
     text-align: center;
+}
+
+#tela-final video {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(94, 224, 159, 0.5); 
 }
 
 .pontuacao-final-texto {
