@@ -37,8 +37,4 @@ Pronto! A tela de instruções aparecerá e você poderá começar a jogar.
 * `audio/`: Pasta para armazenar os arquivos de áudio do jogo.
 ---
 
-<<<<<<< HEAD
 Feito com 💙 e 💻. Divirta-se jogando!
-=======
-Feito com 💙 e 💻. Divirta-se jogando!
->>>>>>> 547f19f871904f4b52c7e2b5a4a1f5d252ebae23

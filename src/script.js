@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const sobreNome = document.getElementById('sobre-nome');
     const sobreImg = document.getElementById('sobre-img');
     const sobreTexto = document.getElementById('sobre-texto');
-    const botaoFecharSobre = document = document.getElementById('botao-fechar-sobre');
+    const botaoFecharSobre = document.getElementById('botao-fechar-sobre');
 
     const perguntaTitulo = document.getElementById('pergunta-titulo');
     const personagemPerguntaNome = document.getElementById('personagem-pergunta-nome');
@@ -42,120 +42,201 @@ document.addEventListener('DOMContentLoaded', () => {
     let usos5050Restantes = 3;
     let pontuacao = 0;
 
-    const somAcerto = new Audio('audio/sucesso.mp3');
-    const somErro = new Audio('audio/falha.mp3');
-    const somClique = new Audio('audio/clique.mp3');
-    const somEliminar = new Audio('audio/eliminar.mp3');
+    // CORRIGIDO: Adicionado ../audio/
+    const somAcerto = new Audio('../audio/sucesso.mp3');
+    const somErro = new Audio('../audio/falha.mp3');
+    const somClique = new Audio('../audio/clique.mp3');
+    const somEliminar = new Audio('../audio/eliminar.mp3');
 
     const perguntasOriginal = [
-        {
-            pergunta: "O que é LGPD?",
-            opcoes: [
-                "Lei Geral de Proteção de Dados",
-                "Livro Geral de Programação Digital",
-                "Lista Global de Pessoas e Dados",
-                "Lei de Garantia de Propriedade Digital"
-            ],
-            respostaCorreta: "Lei Geral de Proteção de Dados",
-            dica: "É uma lei que protege informações pessoais.",
-        },
-        {
-            pergunta: "Qual dessas é uma técnica de Segurança da Informação?",
-            opcoes: [
-                "Firewall",
-                "Churrasqueira elétrica",
-                "Micro-ondas",
-                "Ventilador"
-            ],
-            respostaCorreta: "Firewall",
-            dica: "Serve como barreira contra acessos indevidos.",
-        },
-        {
-            pergunta: "O que é um data lake?",
-            opcoes: [
-                "Um grande repositório de dados brutos",
-                "Um lago artificial para dados",
-                "Um software para edição de texto",
-                "Um tipo de peixe"
-            ],
-            respostaCorreta: "Um grande repositório de dados brutos",
-            dica: "A palavra 'lake' (lago) é uma metáfora para algo grande e inexplorado.",
-        },
-        {
-            pergunta: "Qual a função do SQL (Structured Query Language)?",
-            opcoes: [
-                "Criar gráficos e slides",
-                "Gerenciar e manipular bancos de dados relacionais",
-                "Desenhar interfaces de usuário",
-                "Proteger redes de computadores"
-            ],
-            respostaCorreta: "Gerenciar e manipular bancos de dados relacionais",
-            dica: "Pense em 'linguagem de consulta' para bancos de dados.",
-        },
-        {
-            pergunta: "O que é 'machine learning'?",
-            opcoes: [
-                "Treinamento de academia para robôs",
-                "Um novo tipo de linguagem de programação",
-                "Área da IA que permite máquinas aprenderem com dados sem serem explicitamente programadas",
-                "O estudo da mecânica de jogos"
-            ],
-            respostaCorreta: "Área da IA que permite máquinas aprenderem com dados sem serem explicitamente programadas",
-            dica: "O nome já diz, 'aprendizado de máquina'.",
-        },
-        {
-            pergunta: "Qual o principal objetivo da criptografia de dados?",
-            opcoes: [
-                "Comprimir arquivos para economizar espaço",
-                "Aumentar a velocidade da internet",
-                "Tornar dados ilegíveis para usuários não autorizados",
-                "Ajustar o brilho da tela do computador"
-            ],
-            respostaCorreta: "Tornar dados ilegíveis para usuários não autorizados",
-            dica: "Pense em códigos secretos ou 'chaves' que protegem a informação.",
-        },
-        {
-            pergunta: "Em big data, o que significa a letra 'V' de Volume?",
-            opcoes: [
-                "A velocidade de processamento dos dados",
-                "A variedade de tipos de dados",
-                "O grande volume de dados gerados",
-                "O valor financeiro dos dados"
-            ],
-            respostaCorreta: "O grande volume de dados gerados",
-            dica: "A sigla é V, V, V, V... e a primeira letra se refere à 'quantidade'.",
-        }
-    ];
-
+    {
+        pergunta: "A LGPD surgiu para:",
+        opcoes: [
+            "Regular o uso de todos os tipos de dados apenas pelas empresas.",
+            "Proteger os dados pessoais e garantir direitos aos cidadãos. ",
+            "Restringir o uso de tecnologia em empresas.",
+            "Estabelecer regras apenas para órgãos públicos."
+        ],
+        respostaCorreta: "Proteger os dados pessoais e garantir direitos aos cidadãos. ",
+        dica: "Ela garante direitos de privacidade e proteção das pessoas.",
+    },
+    {
+        pergunta: "Qual destes é um exemplo de dado sensível pela LGPD?",
+        opcoes: [
+            "Origem racial ou étnica.",
+            "Endereço residencial.",
+            "CPF.",
+            "Nome completo."
+        ],
+        respostaCorreta: "Origem racial ou étnica.",
+        dica: "É um dado que pode gerar discriminação se divulgado.",
+    },
+    {
+        pergunta: "Qual órgão fiscaliza e pode aplicar multas em caso de descumprimento da LGPD?",
+        opcoes: [
+            "Receita Federal.",
+            "ANPD – Autoridade Nacional de Proteção de Dados.",
+            "Banco Central.",
+            "Ministério da Economia."
+        ],
+        respostaCorreta: "ANPD – Autoridade Nacional de Proteção de Dados.",
+        dica: "É uma autoridade criada especificamente para cuidar de dados pessoais.",
+    },
+    {
+        pergunta: "Imagine: um colaborador tira uma selfie com a tela do computador aberta e posta nas redes sociais. Qual o risco?",
+        opcoes: [
+            "Nenhum, pois a imagem é pessoal.",
+            "Vazamento de informações de terceiros ou confidenciais da empresa.",
+            "Apenas prejudicar a estética da foto.",
+            "Ganhar curtidas e engajamento."
+        ],
+        respostaCorreta: "Vazamento de informações de terceiros ou confidenciais da empresa.",
+        dica: "Pense no que pode aparecer no fundo da foto além da pessoa.",
+    },
+    {
+        pergunta: "Se a Docket vazar dados pessoais de clientes por descuido de um colaborador, qual pode ser a consequência?",
+        opcoes: [
+            "Apenas uma conversa informal de advertência.",
+            "Multas que podem chegar até R$ 50 milhões.",
+            "Perda automática de todos os contratos.",
+            "Prisão imediata do colaborador envolvido."
+        ],
+        respostaCorreta: "Multas que podem chegar até R$ 50 milhões.",
+        dica: "A LGPD prevê punições financeiras pesadas.",
+    },
+    {
+        pergunta: "Qual destas é uma boa prática para evitar incidentes de proteção de dados?",
+        opcoes: [
+            "Usar softwares não autorizados para agilizar tarefas.",
+            "Conferir o destinatário antes de enviar arquivos por e-mail ou outros meios de comunicação.",
+            "Compartilhar telas sem verificar o conteúdo exibido.",
+            "Salvar documentos da empresa em aplicativos pessoais."
+        ],
+        respostaCorreta: "Conferir o destinatário antes de enviar arquivos por e-mail ou outros meios de comunicação.",
+        dica: "Uma simples checagem antes de apertar 'enviar' evita muitos problemas.",
+    },
+    {
+        pergunta: "O que é um encarregado (DPO) na LGPD?",
+        opcoes: [
+            "O titular dos dados.",
+            "O profissional responsável por atuar como canal de comunicação entre empresa, titulares e a ANPD.",
+            "O auditor interno de TI.",
+            "O gestor financeiro."
+        ],
+        respostaCorreta: "O profissional responsável por atuar como canal de comunicação entre empresa, titulares e a ANPD.",
+        dica: "Ele é como um elo entre a empresa e a Autoridade de Dados.",
+    },
+    
+    {
+        pergunta: "O que significa Confidencialidade em Segurança da Informação?",
+        opcoes: [
+            "Qualquer pessoa pode acessar a informação.",
+            "Apenas pessoas autorizadas podem acessar a informação.",
+            "A informação precisa estar sempre pública.",
+            "A informação nunca deve ser compartilhada."
+        ],
+        respostaCorreta: "Apenas pessoas autorizadas podem acessar a informação.",
+        dica: "Nem todos têm acesso, só quem tem permissão.",
+    },
+    {
+        pergunta: "Um documento marcado como Estritamente Confidencial significa que:",
+        opcoes: [
+            "Pode ser enviado a qualquer colaborador sem restrição.",
+            "Se vazar, pode causar grandes prejuízos à empresa.",
+            "Não tem importância estratégica.",
+            "É destinado ao público externo."
+        ],
+        respostaCorreta: "Se vazar, pode causar grandes prejuízos à empresa.",
+        dica: "Se cair em mãos erradas, gera danos sérios.",
+    },
+    {
+        pergunta: "O que NÃO é uma boa prática de senha?",
+        opcoes: [
+            "Usar datas de aniversário, nomes de familiares ou sequenciais.",
+            "Criar senhas com letras, números e símbolos.",
+            "Alterar a senha periodicamente.",
+            "Não compartilhar senhas com ninguém."
+        ],
+        respostaCorreta: "Usar datas de aniversário, nomes de familiares ou sequenciais.",
+        dica: "Evite senhas fáceis de adivinhar.",
+    },
+    {
+        pergunta: "Antes de instalar softwares no computador da empresa, é importante:",
+        opcoes: [
+            "Instalar apenas os que encontrar na internet.",
+            "Usar somente softwares homologados pelo TI.",
+            "Pedir a senha de administrador para colegas.",
+            "Ignorar atualizações de segurança."
+        ],
+        respostaCorreta: "Usar somente softwares homologados pelo TI.",
+        dica: "O time de TI precisa validar o que pode ser instalado.",
+    },
+    {
+        pergunta: "Qual dessas situações representa um risco de segurança digital?",
+        opcoes: [
+            "Bloquear a tela do computador ao sair da mesa.",
+            "Compartilhar foto do escritório com telas abertas ao fundo.",
+            "Guardar documentos em gavetas com chave.",
+            "Usar biometria para acessar o prédio."
+        ],
+        respostaCorreta: "Compartilhar foto do escritório com telas abertas ao fundo. ",
+        dica: "Cuidado com o que pode aparecer sem querer em fotos.",
+    },
+    {
+        pergunta: "Qual cuidado devemos ter com equipamentos de trabalho?",
+        opcoes: [
+            "Levar líquidos para perto do computador.",
+            "Transportar o notebook com cuidado na mochila da Docket.",
+            "Comer sobre o teclado.",
+            "Deixar o computador sempre aberto."
+        ],
+        respostaCorreta: "Transportar o notebook com cuidado na mochila da Docket.",
+        dica: "O equipamento deve ser tratado como ferramenta de valor.",
+    },
+    {
+        pergunta: "O que é phishing?",
+        opcoes: [
+            "Um método de criptografia avançada.",
+            "Um tipo de ataque que engana o usuário para obter informações confidenciais.",
+            "Um software de backup de dados.",
+            "Uma técnica de autenticação segura."
+        ],
+        respostaCorreta: "Um tipo de ataque que engana o usuário para obter informações confidenciais.",
+        dica: "Normalmente chega por e-mail, fingindo ser algo confiável.",
+    },
+];
     let perguntas = [];
     
     const apresentadores = [
-        { nome: "Amanda", img: "images/Amanda.png" },
-        { nome: "Neuri", img: "images/Neuri.png" }
+        { nome: "Amanda", img: "../images/Amanda.png" },
+        { nome: "Neuri", img: "../images/Neuri.png" }
     ];
-    const infoFeedbackAcerto = { nome: "Hudson", img: "images/Hudson.png", texto: "Parabéns, você acertou! Prepare-se para a próxima pergunta." };
-    const infoFeedbackErro = { nome: "Elaine", img: "images/Elaine.png", texto: "Continue tentando, a próxima é sua!" };
-    const personagemDica = { nome: "Ailton", img: "images/Ailton.png" };
+    
+    const infoFeedbackAcerto = { nome: "Hudson", img: "../images/Hudson.png", texto: "Parabéns, você acertou! Prepare-se para a próxima pergunta." };
+    
+    const infoFeedbackErro = { nome: "Elaine", img: "../images/Elaine.png", texto: "Continue tentando, a próxima é sua!" };
+    
+    const personagemDica = { nome: "Ailton", img: "../images/Ailton.png" };
     
     const infoPersonagens = {
         Amanda: {
-            img: "images/Amanda.png",
+            img: "../images/Amanda.png",
             descricao: "Amanda é a host do show de dados. Ela é especialista em governança de dados e adora compartilhar seu conhecimento de forma divertida."
         },
         Hudson: {
-            img: "images/Hudson.png",
+            img: "../images/Hudson.png",
             descricao: "Hudson trabalha na área de dados. Sua paixão é a análise e visualização de dados, transformando números brutos em insights valiosos."
         },
         Ailton: {
-            img: "images/Ailton.png",
+            img: "../images/Ailton.png",
             descricao: "Ailton é do time de engenharia de dados. Ele constrói a infraestrutura para que os dados sejam coletados, processados e armazenados de forma eficiente."
         },
         Elaine: {
-            img: "images/Elaine.png",
+            img: "../images/Elaine.png",
             descricao: "Elaine é a nossa cientista de dados. Ela usa modelos estatísticos e aprendizado de máquina para prever tendências e resolver problemas complexos."
         },
         Neuri: {
-            img: "images/Neuri.png",
+            img: "../images/Neuri.png",
             descricao: "Neuri é o especialista em segurança da informação. Ele garante que os dados da Docket e de nossos clientes estejam sempre protegidos e seguros."
         }
     };
@@ -308,6 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
         somClique.play();
         perguntas = embaralharArray([...perguntasOriginal]);
         exibirTela(telaPergunta);
+        perguntaAtualIndex = 0;
         carregarPergunta(perguntaAtualIndex);
     });
     
